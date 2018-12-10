@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Canvas Bridget Riley Image With DeviceMotion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+#myCanvas{
+	    	width: 100vw;
+	        height: 100vh;
+	    	background: rgb(255, 255, 255);
+		 }
+</style>
+</head>
+<body>
+<canvas id="myCanvas" ></canvas>
+<script type="text/javascript">
+
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+	
+var requestAnimationFrame = window.requestAnimationFrame
+	
+ctx.lineWidth=2.5;
+var cp1x=-70;
+var cp1y=7;
+
+		for (var i=0;i<500;i++)
+			{
+					ctx.beginPath();
+					ctx.moveTo(cp1x,0);
+					cp1x += 10;
+					ctx.bezierCurveTo(cp1x+0,cp1y+0, cp1x+50, cp1y+0, cp1x+0, cp1y+30);
+					ctx.bezierCurveTo(cp1x+0, cp1y+30, cp1x-55, cp1y+47, cp1x+0, cp1y+65);
+					ctx.bezierCurveTo(cp1x+0, cp1y+65, cp1x+55, cp1y+80,cp1x+0, cp1y+95);
+					ctx.bezierCurveTo(cp1x+0, cp1y+95, cp1x-45, cp1y+110, cp1x+0, cp1y+120);
+					ctx.bezierCurveTo(cp1x+0, cp1y+120, cp1x+72, cp1y+137, cp1x+15, cp1y+140);
+					ctx.strokeStyle = 'Black';
+					ctx.stroke();
+  
+			}
+	if (window.DeviceMotionEvent==undefined)
+      console.log("Your browser does not support the DeviceMotionEvent");
+	
+     window.addEventListener("devicemotion", handleMotionEvent, true);
+
+     function handleMotionEvent(event) {
+         var x = event.accelerationIncludingGravity.x;
+         var y = event.accelerationIncludingGravity.y;
+		 var z = event.accelerationIncludingGravity.z;
+      	 var gradient = ctx.createLinearGradient(150, 0, 0, 190);
+		 gradient.addColorStop("0", "Crimson");
+		 gradient.addColorStop("0.5", "Aquamarine");
+		 gradient.addColorStop("1.0", "Gold");
+		 gradient.addColorStop("1.0", "CornflowerBlue");
+		 gradient.addColorStop("1", "Coral");
+
+         console.log("handleMotionEvent: ", x, y, z);
+          requestAnimationFrame(drawAndUpdate);
+          function drawAndUpdate()
+		  {
+			     ctx.clearRect(0, 0, 500, 500);
+                 cp1x=x*5;
+                 cp1y=y*5;
+                 for (var i=0;i<500;i++)
+				 {
+					 
+                   ctx.beginPath();
+                   ctx.moveTo(cp1x,0);
+                   console.log("handleMotionEvent: ", cp1x, cp1y);
+
+                    ctx.bezierCurveTo(cp1x+0,cp1y+0, cp1x+50, cp1y+0, cp1x+0, cp1y+30);
+					ctx.bezierCurveTo(cp1x+0, cp1y+30, cp1x-55, cp1y+47, cp1x+0, cp1y+65);
+					ctx.bezierCurveTo(cp1x+0, cp1y+65, cp1x+55, cp1y+80,cp1x+0, cp1y+95);
+					ctx.bezierCurveTo(cp1x+0, cp1y+95, cp1x-45, cp1y+110, cp1x+0, cp1y+120);
+					ctx.bezierCurveTo(cp1x+0, cp1y+120, cp1x+72, cp1y+137, cp1x+15, cp1y+140);
+					 if(cp1y > 50){
+						ctx.strokeStyle = gradient;
+						}
+					 if(cp1y > 10 && cp1y < 20)
+					    {
+						ctx.strokeStyle = gradient;
+						}
+                    ctx.stroke();
+                    cp1x += 10;
+                 }
+          	}
+      }
+</script>
+</body>
+</html>
